@@ -16,16 +16,33 @@
 </head>
 
 <body>
-    <div class="container text-center">
-        <h2>Search Database</h2>
-        <input class="form-control" type="text" name="search" 
-            id="search" placeholder="Search inventory">
-        
-        <br>
-        <br>
+    <div class="container">
+        <div class="row  text-center">
+            <h2>Search Database</h2>
+            <input class="form-control" type="text" name="search" 
+                id="search" placeholder="Search inventory">
+            
+            <br>
+            <br>
 
-        <h2 class="bg-success" id="result"></h2>
+            <h2 class="bg-success" id="result"></h2>
+        </div>
 
+        <div class="row">
+            <form id="add-car-form" action="add-cars.php" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="car-name">
+                </div>
+                
+                <br>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Add car">
+                </div>
+            </form>
+
+            <div id="car-result"></div>
+        </div>
     </div>
 
     <!-- JQuery CDN -->
@@ -33,6 +50,23 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- Custom script -->
     <script src="/ajax/js/script.js"></script>
+
+    <!-- Add new cars to database -->
+    <script>
+        $(document).ready(function() {
+            $("#add-car-form").on("submit", function(evt) {
+                evt.preventDefault();
+                
+                var postData = $(this).serialize();
+                var myUrl = $(this).attr("action");
+
+                // $.post is a short hand for sending AJAX request of method POST
+                $.post(myUrl, postData, function(phpTableData) {
+                    $("#car-result").html(phpTableData);
+                })
+            });  
+        });
+    </script>
 </body>
 
 </html>

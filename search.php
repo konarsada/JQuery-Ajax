@@ -29,8 +29,8 @@ if(isset($_POST["search"])) {
 ?>
 
 
-<ul class="list-unstyled">
-<?php foreach($results as $indexes=>$row): ?>
-    <li><?= htmlspecialchars($row["cars"]); ?></li>
-<?php endforeach; ?>
+<ul>
+    <?php foreach($results as $indexes=>$row): ?>
+        <li><?= htmlspecialchars($row["cars"]); ?></li>
+    <?php endforeach; ?>
 </ul>
