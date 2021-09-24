@@ -1,7 +1,5 @@
 <?php
 
-
-
 // make the database connection and query result
 if(isset($_POST["search"])) {
     $search = $_POST["search"];

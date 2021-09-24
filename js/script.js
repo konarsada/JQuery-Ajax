@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    
+    // display select brands
     $("#search").keyup(function() {
         var search = $(this).val();
         
@@ -6,11 +8,25 @@ $(document).ready(function() {
             url: "search.php",
             data: {search: search},
             type: "POST",
-            success: function(data) {
-                if(!data.error) {
-                    $("#result").html(data);
-                }
+            success: function(resultData) {
+                $("#result").html(resultData);
             }
         });
     });
+
+    // display all cars
+    function updateCars() {
+        $.ajax({
+            url: "displayCars.php",
+            type: "POST",
+            success: function(resultCars) {
+                $("#show-cars").html(resultCars);
+            }
+        });
+    }
+
+    setInterval(
+        function() {
+            updateCars();
+    }, 1000);
 });
