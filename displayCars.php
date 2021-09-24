@@ -1,21 +1,10 @@
 <?php
 
-$dsn = "mysql:host=" . "localhost" . ";dbname=" . "ajax" . ";charset=utf8";
+require "includes/init.php";
 
-try {
-    $conn = new PDO($dsn, "root", "");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$conn = Database::getConn();
 
-    $sql = "SELECT * FROM cars";
-
-    $stmt = $conn->query($sql);
-
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-catch(PDOException $e) {
-    echo $e->getMessage();
-    exit;
-}
+$results = Database::getAll($conn);
 
 ?>
 

@@ -1,23 +1,17 @@
 <?php
 
+require "includes/init.php";
+
 if(isset($_POST["car-name"])) {
     $carName = $_POST["car-name"];
-    $dsn = "mysql:host=" . "localhost" . ";dbname=" . "ajax" . ";charset=utf8";
-    
-    try {
-        $conn = new PDO($dsn, "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "INSERT INTO cars(cars) VALUES(:carName)";
+    $addCar = new Database();
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue(":carName", $carName, PDO::PARAM_STR);
-        $stmt->execute();
+    $conn = Database::getConn();
 
+    $isCarAdded = $addCar->newCar($conn, $carName);
+
+    if($isCarAdded) {
         echo "New car- " . $carName . " added to database";
-    }
-    catch(PDOException $e) {
-        echo $e->getMessage();
-        exit;
     }
 }

@@ -1,27 +1,16 @@
 <?php
 
+require "includes/init.php";
+
 // make the database connection and query result
 if(isset($_POST["search"])) {
     $search = $_POST["search"];
 
-    $dsn = "mysql:host=" . "localhost" . ";dbname=" . "ajax" . ";charset=utf8";
-    
-    try {
-        $conn = new PDO($dsn, "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $searchCar = new Database();
 
-        $sql = "SELECT * FROM cars WHERE cars LIKE CONCAT(:search, '%')";
+    $conn = Database::getConn();
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue(":search", $search, PDO::PARAM_STR);
-        $stmt->execute();
-
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    catch(PDOException $e) {
-        echo $e->getMessage();
-        exit;
-    }
+    $results = $searchCar->searchCar($conn, $search);
 }
 
 ?>
