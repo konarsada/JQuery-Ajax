@@ -2,14 +2,29 @@
 
 class Database {
 
+    protected $db_host;
+    
+    protected $db_name;
+    
+    protected $db_user;
+    
+    protected $db_pass;
+
+    public function __construct($host, $name, $user, $password) {
+        $this->db_host = $host;
+        $this->db_name = $name;
+        $this->db_user = $user;
+        $this->db_pass = $password;
+    }
+
     /**
      * Make database connection
      */
-    public static function getConn() {
-        $dsn = "mysql:host=" . "localhost" . ";dbname=" . "ajax" . ";charset=utf8";
+    public function getConn() {
+        $dsn = "mysql:host=" . $this->db_host . ";dbname=" . $this->db_name . ";charset=utf8";
 
         try {
-            $conn = new PDO($dsn, "root", "");
+            $conn = new PDO($dsn, $this->db_user, $this->db_pass);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             return $conn;
@@ -23,21 +38,26 @@ class Database {
     /**
      * Show all cars of a particular brand
      */
-    public function searchCar($conn, $searchCar) {
-        $sql = "SELECT * FROM cars WHERE cars LIKE CONCAT(:search, '%')";
+    public static function searchCar($conn, $searchCar) {
+        $sql = "SELECT * FROM cars WHERE title LIKE CONCAT(:search, '%')";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":search", $searchCar, PDO::PARAM_STR);
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $count = $stmt->rowCount();
+
+        if($count == 0)
+            return false;
+        else
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
      * Add new car
      */
-    public function newCar($conn, $newCarName) {
-        $sql = "INSERT INTO cars(cars) VALUES(:carName)";
+    public static function newCar($conn, $newCarName) {
+        $sql = "INSERT INTO cars(title) VALUES(:carName)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":carName", $newCarName, PDO::PARAM_STR);
@@ -56,4 +76,20 @@ class Database {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Action - Controller
+     * 
+     * Get by id
+     */
+    public static function getById($conn, $id) {
+        $sql = "SELECT * FROM cars WHERE id=:id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

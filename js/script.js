@@ -29,4 +29,18 @@ $(document).ready(function() {
         function() {
             updateCars();
     }, 1000);
+
+    // add new cars
+    $("#add-car-form").on("submit", function(evt) {
+        evt.preventDefault();
+        
+        var postData = $(this).serialize();
+        var myUrl = $(this).attr("action");
+
+        // $.post is a short hand for sending AJAX request of method POST
+        $.post(myUrl, postData, function(phpTableData) {
+            $("#car-result").html(phpTableData);
+            $("#add-car-form")[0].reset();
+        })
+    });
 });

@@ -1,23 +1,25 @@
 <?php
 
 require "includes/init.php";
+$db = require "includes/db.php";
 
 // make the database connection and query result
 if(isset($_POST["search"])) {
     $search = $_POST["search"];
 
-    $searchCar = new Database();
+    $conn = $db->getConn();
 
-    $conn = Database::getConn();
-
-    $results = $searchCar->searchCar($conn, $search);
+    $results = Database::searchCar($conn, $search);
 }
 
 ?>
 
-
-<ul>
-    <?php foreach($results as $indexes=>$row): ?>
-        <li><?= htmlspecialchars($row["cars"]); ?></li>
-    <?php endforeach; ?>
-</ul>
+<?php if(!$results): ?>
+    <h3>Car not available</h3>
+<?php else: ?>
+    <ul>
+        <?php foreach($results as $indexes=>$row): ?>
+            <li><?= htmlspecialchars($row["title"]); ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
