@@ -92,4 +92,18 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Update record
+     */
+    public static function updateRecord($conn, $id, $newTitle) {
+        $sql = "UPDATE cars SET title=:newTitle WHERE id=:id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(":newTitle", $newTitle, PDO::PARAM_STR);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

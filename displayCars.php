@@ -12,7 +12,11 @@ $results = Database::getAll($conn);
 <?php foreach($results as $indexes=>$row): ?>
     <tr>
         <td><?= htmlspecialchars($row["id"]); ?></td>
-        <td><a class="title-link" href="#" data-row-id="<?= htmlspecialchars($row["id"]); ?>"><?= htmlspecialchars($row["title"]); ?></a></td>
+        <td><a class="title-link" href="#"
+                data-row-id="<?= htmlspecialchars($row["id"]); ?>">
+                    <?= htmlspecialchars($row["title"]); ?>
+            </a>
+        </td>
     </tr>
 <?php endforeach; ?>
 
