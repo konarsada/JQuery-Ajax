@@ -106,4 +106,17 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Delete record
+     */
+    public static function deleteRecord($conn, $id) {
+        $sql = "DELETE FROM cars WHERE id=:id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return true;
+    }
+
 }
